@@ -37,8 +37,10 @@ async function sendMail(mailPayload) {
 	};
 	await transporter.sendMail(mailOptions, function (err, data) {
 		if (err) {
+			console.log('Error: ' + err);
 			return 'Error: ' + err;
 		}
+		console.log('Email sent successfully');
 		return 'Email sent successfully';
 	});
 }
