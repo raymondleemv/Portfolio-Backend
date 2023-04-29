@@ -3,30 +3,51 @@ import nodemailer from 'nodemailer';
 
 dotenv.config();
 
-let transporter = nodemailer.createTransport({
-	service: 'gmail',
-	auth: {
-		type: 'OAuth2',
-		user: process.env.MAIL_USERNAME,
-		pass: process.env.MAIL_PASSWORD,
-		clientId: process.env.OAUTH_CLIENT_ID,
-		clientSecret: process.env.OAUTH_CLIENT_SECRET,
-		refreshToken: process.env.OAUTH_REFRESH_TOKEN,
-	},
-});
+// https://stackoverflow.com/questions/65631481/nodemailer-in-vercel-not-sending-email-in-production
+async function sendMail(mailPayload) {
+	let transporter = nodemailer.createTransport({
+		host: 'smtp.gmail.com',
+		port: 465,
+		secure: true,
+		auth: {
+			type: 'OAuth2',
+			user: process.env.MAIL_USERNAME,
+			pass: process.env.MAIL_PASSWORD,
+			clientId: process.env.OAUTH_CLIENT_ID,
+			clientSecret: process.env.OAUTH_CLIENT_SECRET,
+			refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+		},
+	});
 
-function sendMail(mailPayload) {
+	await new Promise((resolve, reject) => {
+		transporter.verify(function (error, success) {
+			if (error) {
+				console.log(error);
+				reject(error);
+			} else {
+				console.log('Server is ready to take our messages');
+				resolve(success);
+			}
+		});
+	});
+
 	let mailOptions = {
 		from: mailPayload.name + ' <noreply.raymondleemv@gmail.com>',
 		to: 'raymondleemv@gmail.com',
 		subject: mailPayload.subject,
 		text: `The sender\'s email is ${mailPayload.email}\n\n${mailPayload.message}`,
 	};
-	transporter.sendMail(mailOptions, function (err, data) {
-		if (err) {
-			return 'Error: ' + err;
-		}
-		return 'Email sent successfully';
+
+	await new Promise((resolve, reject) => {
+		transporter.sendMail(mailOptions, (err, info) => {
+			if (err) {
+				console.error(err);
+				reject(err);
+			} else {
+				console.log(info);
+				resolve(info);
+			}
+		});
 	});
 }
 
