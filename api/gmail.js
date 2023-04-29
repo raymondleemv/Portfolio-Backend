@@ -15,14 +15,14 @@ let transporter = nodemailer.createTransport({
 	},
 });
 
-function sendMail(mailPayload) {
+async function sendMail(mailPayload) {
 	let mailOptions = {
 		from: mailPayload.name + ' <noreply.raymondleemv@gmail.com>',
 		to: 'raymondleemv@gmail.com',
 		subject: mailPayload.subject,
 		text: `The sender\'s email is ${mailPayload.email}\n\n${mailPayload.message}`,
 	};
-	transporter.sendMail(mailOptions, function (err, data) {
+	await transporter.sendMail(mailOptions, function (err, data) {
 		if (err) {
 			return 'Error: ' + err;
 		}
