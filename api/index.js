@@ -39,7 +39,7 @@ app.get('/api/skills', async (req, res) => {
 });
 
 app.post('/api/email', async (req, res) => {
-	let status = await sendMail(req.body);
+	let status = sendMail(req.body);
 	res.send(status);
 });
 

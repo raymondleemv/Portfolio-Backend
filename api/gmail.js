@@ -3,9 +3,9 @@ import nodemailer from 'nodemailer';
 
 dotenv.config();
 
+// https://stackoverflow.com/questions/65631481/nodemailer-in-vercel-not-sending-email-in-production
 async function sendMail(mailPayload) {
 	let transporter = nodemailer.createTransport({
-		// service: 'gmail',
 		host: 'smtp.gmail.com',
 		port: 465,
 		secure: true,
@@ -20,7 +20,6 @@ async function sendMail(mailPayload) {
 	});
 
 	await new Promise((resolve, reject) => {
-		// verify connection configuration
 		transporter.verify(function (error, success) {
 			if (error) {
 				console.log(error);
@@ -40,7 +39,6 @@ async function sendMail(mailPayload) {
 	};
 
 	await new Promise((resolve, reject) => {
-		// send mail
 		transporter.sendMail(mailOptions, (err, info) => {
 			if (err) {
 				console.error(err);
@@ -51,15 +49,6 @@ async function sendMail(mailPayload) {
 			}
 		});
 	});
-
-	// await transporter.sendMail(mailOptions, function (err, data) {
-	// 	if (err) {
-	// 		console.log('Error: ' + err);
-	// 		return 'Error: ' + err;
-	// 	}
-	// 	console.log('Email sent successfully');
-	// 	return 'Email sent successfully';
-	// });
 }
 
 export { sendMail };
