@@ -32,13 +32,19 @@ async function sendMail(mailPayload) {
 	});
 
 	let mailOptions = {
-		from: mailPayload.name + ' <noreply.raymondleemv@gmail.com>',
-		to: 'raymondleemv@gmail.com',
+		from: 'Raymond Lee <noreply.raymondleemv@gmail.com>',
+		to: ['raymondleemv@gmail.com', mailPayload.email],
 		subject: mailPayload.subject,
-		text: `The sender\'s email is ${mailPayload.email}\n\n${mailPayload.message}`,
+		text:
+			`Hi ${mailPayload.name},\n\n` +
+			`Thank you for reaching out, I have got your message below and I will get back to you soon.\n\n` +
+			`Best Regards,\n` +
+			`Raymond Lee\n\n` +
+			`The sender\'s email is ${mailPayload.email}\n\n${mailPayload.message}`,
 	};
 
 	await new Promise((resolve, reject) => {
+		console.log(mailOptions.to);
 		transporter.sendMail(mailOptions, (err, info) => {
 			if (err) {
 				console.error(err);
