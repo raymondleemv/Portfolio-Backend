@@ -2,6 +2,7 @@ import { MongoClient, ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
 import Project from '../models/Project.js';
 import Career from '../models/Career.js';
+import Skill from '../models/Skill.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -84,6 +85,27 @@ async function getSkills() {
 	return await getCollection('skills');
 }
 
+async function addSkill(skill) {
+	const document = await Skill.create(skill);
+	console.log(document);
+}
+
+async function editSkill(skill) {
+	console.log(skill);
+	const document = await Skill.findOneAndUpdate({ _id: skill._id }, skill);
+	console.log(document);
+	return document;
+}
+
+async function deleteSkill(skillID) {
+	try {
+		const document = await Skill.deleteOne({ _id: skillID });
+		console.log(document);
+	} catch (e) {
+		console.log(e);
+	}
+}
+
 export {
 	connection,
 	getCareers,
@@ -95,4 +117,7 @@ export {
 	addCareer,
 	editCareer,
 	deleteCareer,
+	addSkill,
+	editSkill,
+	deleteSkill,
 };

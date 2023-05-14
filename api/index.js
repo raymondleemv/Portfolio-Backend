@@ -5,6 +5,7 @@ import cors from 'cors';
 import * as database from '../database/database.js';
 import projectsRouter from '../routes/projects.js';
 import careersRouter from '../routes/careers.js';
+import skillsRouter from '../routes/skills.js';
 import { sendMail } from './gmail.js';
 
 dotenv.config();
@@ -47,6 +48,7 @@ app.post('/api/email', async (req, res) => {
 
 app.use('/api/projects/', projectsRouter);
 app.use('/api/careers/', careersRouter);
+app.use('/api/skills/', skillsRouter);
 
 app.listen(port, () => {
 	console.log(`app listening on ${port}`);
