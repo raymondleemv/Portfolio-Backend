@@ -1,6 +1,7 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import mongoose from 'mongoose';
 import Project from '../models/Project.js';
+import Career from '../models/Career.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -31,6 +32,27 @@ async function editProject(project) {
 async function deleteProject(projectID) {
 	try {
 		const document = await Project.deleteOne({ _id: projectID });
+		console.log(document);
+	} catch (e) {
+		console.log(e);
+	}
+}
+
+async function addCareer(career) {
+	const document = await Career.create(career);
+	console.log(document);
+}
+
+async function editCareer(career) {
+	console.log(career);
+	const document = await Career.findOneAndUpdate({ _id: career._id }, career);
+	console.log(document);
+	return document;
+}
+
+async function deleteCareer(careerID) {
+	try {
+		const document = await Career.deleteOne({ _id: careerID });
 		console.log(document);
 	} catch (e) {
 		console.log(e);
@@ -70,4 +92,7 @@ export {
 	addProject,
 	editProject,
 	deleteProject,
+	addCareer,
+	editCareer,
+	deleteCareer,
 };
