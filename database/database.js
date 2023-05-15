@@ -15,6 +15,8 @@ mongoose
 	.then(console.log('connected'))
 	.catch((err) => console.log(err));
 
+console.log(dbURL);
+
 async function addProject(project) {
 	const document = await Project.create(project);
 	console.log(document);
@@ -88,6 +90,7 @@ async function getSkills() {
 async function addSkill(skill) {
 	const document = await Skill.create(skill);
 	console.log(document);
+	return document;
 }
 
 async function editSkill(skill) {
