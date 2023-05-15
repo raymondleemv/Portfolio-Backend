@@ -3,13 +3,10 @@ import * as database from '../database/database.js';
 
 const router = express.Router();
 
-router.post('/add', async (req, res) => {
+router.post('/add', (req, res) => {
 	console.log('backend add skill');
-	console.log('outside catch');
 	try {
-		console.log('inside catch');
-		let document = await database.addSkill(req.body);
-		console.log(document);
+		database.addSkill(req.body);
 	} catch (e) {
 		return res.status(400).send(e);
 	}
